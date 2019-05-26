@@ -5,7 +5,7 @@ const { shoeValidation } = require("../validation");
 const verify = require("../routes/verifyToken");
 const validateObjectId = require("../validateObjectId");
 
-router.get("/", verify, (req, res) => {
+router.get("/", (req, res) => {
   Shoe.find((err, shoes) => res.send(shoes));
 });
 
