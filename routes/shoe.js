@@ -9,17 +9,17 @@ router.get("/", (req, res) => {
   Shoe.find((err, shoes) => res.send(shoes));
 });
 
-router.post("/", verify, async (req, res) => {
+router.post("/", async (req, res) => {
   const { error } = shoeValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const category = await Style.findById(req.body.categoryId);
-  if (!category) return res.status(400).send("Invalid style.");
+  const style = await Style.findById(req.body.styleId);
+  if (!style) return res.status(400).send("Invalid style.");
 
   const shoe = new Shoe({
     publishDate: Date.now(),
     title: req.body.title,
-    category: { _id: category._id, name: category.name },
+    style: { _id: style._id, name: style.name },
     numberInStock: req.body.numberInStock,
     price: req.body.price,
     picture: req.body.picture,
@@ -37,14 +37,14 @@ router.put("/:id", async (req, res) => {
   const { error } = shoeValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const category = await Style.findById(req.body.categoryId);
-  if (!category) return res.status(400).send("Invalid style.");
+  const style = await Style.findById(req.body.styleId);
+  if (!style) return res.status(400).send("Invalid style.");
   const shoe = await Shoe.findByIdAndRemove(req.params.id);
 
   const newShoe = new Shoe({
     publishDate: Date.now(),
     title: req.body.title,
-    category: { _id: category._id, name: category.name },
+    style: { _id: style._id, name: style.name },
     numberInStock: req.body.numberInStock,
     price: req.body.price,
     picture: req.body.picture,
@@ -67,7 +67,7 @@ router.get("/:id", validateObjectId, async (req, res) => {
   res.send(shoe);
 });
 
-router.delete("/:id", verify, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const shoe = await Shoe.findByIdAndRemove(req.params.id);
     res.send(shoe);

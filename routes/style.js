@@ -8,7 +8,7 @@ router.get("/", async (req, res) => {
   res.send(styles);
 });
 
-router.post("/", verify, async (req, res) => {
+router.post("/", async (req, res) => {
   const { error } = styleValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -21,7 +21,7 @@ router.post("/", verify, async (req, res) => {
   }
 });
 
-router.put("/:id", [validateObjectId, verify], async (req, res) => {
+router.put("/:id", [validateObjectId], async (req, res) => {
   const { error } = styleValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -39,7 +39,7 @@ router.put("/:id", [validateObjectId, verify], async (req, res) => {
   res.send(style);
 });
 
-router.delete("/:id", [validateObjectId, verify], async (req, res) => {
+router.delete("/:id", [validateObjectId], async (req, res) => {
   const style = await Style.findByIdAndDelete(req.params.id);
   console.log(style);
 

@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const shoeSchema = new Schema({
   title: String,
-  category: { _id: String, name: String },
+  style: { _id: String, name: String },
   numberInStock: Number,
   price: Number,
   publishDate: Date,
