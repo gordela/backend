@@ -33,7 +33,7 @@ router.post("/", verify, async (req, res) => {
   res.send(shoe);
 });
 
-router.put("/", verify, async (req, res) => {
+router.put("/:id", verify, async (req, res) => {
   const { error } = shoeValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
