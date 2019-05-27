@@ -5,6 +5,7 @@ const authRoute = require("./routes/auth");
 const bagRoute = require("./routes/bag");
 const shoeRoute = require("./routes/shoe");
 const styleRoute = require("./routes/style");
+const jwt = require("jsonwebtoken");
 var cors = require("cors");
 
 const app = express();
