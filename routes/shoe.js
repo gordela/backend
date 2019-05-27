@@ -41,7 +41,7 @@ router.put("/", verify, async (req, res) => {
   if (!category) return res.status(400).send("Invalid style.");
   const shoe = await Shoe.findByIdAndRemove(req.params.id);
 
-  const shoe = new Shoe({
+  const newShoe = new Shoe({
     publishDate: Date.now(),
     title: req.body.title,
     category: { _id: category._id, name: category.name },
@@ -53,9 +53,9 @@ router.put("/", verify, async (req, res) => {
     countInBag: req.body.countInBag
   });
 
-  await shoe.save();
+  await newShoe.save();
 
-  res.send(shoe);
+  res.send(newShoe);
 });
 
 router.get("/:id", validateObjectId, async (req, res) => {
