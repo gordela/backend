@@ -5,6 +5,7 @@ const authRoute = require("./routes/auth");
 const bagRoute = require("./routes/bag");
 const shoeRoute = require("./routes/shoe");
 const styleRoute = require("./routes/style");
+var cors = require("cors");
 
 const app = express();
 
@@ -19,6 +20,7 @@ mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true }, () =>
 mongoose.set("useFindAndModify", false);
 
 app.use(express.json());
+app.use(cors());
 
 //Route middlewares
 app.use("/api/user", authRoute);
