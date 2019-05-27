@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "heroku": "^7.24.4",
     "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.11",
     "mongoose": "^5.5.11",
     "nodemon": "^1.19.1"
   }
