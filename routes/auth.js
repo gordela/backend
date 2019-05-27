@@ -2,6 +2,7 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const _ = require("lodash");
 const { registerValidation, loginValidation } = require("../validation");
 
 router.post("/register", async (req, res) => {
@@ -25,10 +26,13 @@ router.post("/register", async (req, res) => {
     address: {},
     bag: {}
   });
+  const token = user.generateAuthToken();
 
   try {
-    const savedUser = await user.save();
-    res.send({ user: user._id });
+    res
+      .header("x-auth-token", token)
+      .header("access-control-expose-headers", "x-auth-token")
+      .send(_.pick(user, ["_id", "name", "email"]));
   } catch (error) {
     res.status(400).send(error);
   }

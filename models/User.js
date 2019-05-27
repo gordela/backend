@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -26,5 +27,16 @@ const userSchema = new mongoose.Schema({
     default: {}
   }
 });
-
+userSchema.methods.generateAuthToken = function() {
+  const token = jwt.sign(
+    {
+      _id: this._id,
+      name: this.name,
+      email: this.email,
+      isAdmin: this.isAdmin
+    },
+    process.env.TOKEN_SECRETs
+  );
+  return token;
+};
 module.exports = mongoose.model("User", userSchema);
