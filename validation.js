@@ -33,7 +33,7 @@ const loginValidation = data => {
 const shoeValidation = data => {
   const schema = {
     title: Joi.string().required(),
-    categoryId: Joi.string().required(),
+    styleId: Joi.string().required(),
     numberInStock: Joi.number().required(),
     price: Joi.number().required(),
     picture: Joi.string().required(),
