@@ -33,6 +33,31 @@ router.post("/", verify, async (req, res) => {
   res.send(shoe);
 });
 
+router.put("/", verify, async (req, res) => {
+  const { error } = shoeValidation(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  const category = await Style.findById(req.body.categoryId);
+  if (!category) return res.status(400).send("Invalid style.");
+  const shoe = await Shoe.findByIdAndRemove(req.params.id);
+
+  const shoe = new Shoe({
+    publishDate: Date.now(),
+    title: req.body.title,
+    category: { _id: category._id, name: category.name },
+    numberInStock: req.body.numberInStock,
+    price: req.body.price,
+    picture: req.body.picture,
+    pictureTwo: req.body.pictureTwo,
+    gender: req.body.gender,
+    countInBag: req.body.countInBag
+  });
+
+  await shoe.save();
+
+  res.send(shoe);
+});
+
 router.get("/:id", validateObjectId, async (req, res) => {
   const shoe = await Shoe.findById(req.params.id);
 
