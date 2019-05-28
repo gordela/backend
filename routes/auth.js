@@ -23,6 +23,7 @@ router.post("/register", async (req, res) => {
     name: req.body.name,
     email: req.body.email,
     password: hashedPassword,
+    isAdmin: false,
     address: {},
     bag: {}
   });
@@ -32,7 +33,7 @@ router.post("/register", async (req, res) => {
     res
       .header("x-auth-token", token)
       .header("access-control-expose-headers", "x-auth-token")
-      .send(_.pick(user, ["_id", "name", "email"]));
+      .send(_.pick(user, ["_id", "name", "email", "isAdmin"]));
   } catch (error) {
     res.status(400).send(error);
   }
@@ -51,7 +52,11 @@ router.post("/login", async (req, res) => {
   const validPass = await bcrypt.compare(req.body.password, user.password);
   if (!validPass) return res.status(400).send("Invalid Password");
   // Create token
-  const token = jwt.sign({ user }, process.env.TOKEN_SECRET);
+  const token = jwt.sign(
+    _.pick(user, ["_id", "name", "email", "isAdmin"]),
+    process.env.TOKEN_SECRET
+  );
+
   res.header("auth-token", token).send(token);
 });
 module.exports = router;
