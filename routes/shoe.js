@@ -9,7 +9,7 @@ router.get("/", (req, res) => {
   Shoe.find((err, shoes) => res.send(shoes));
 });
 
-router.post("/", async (req, res) => {
+router.post("/", verify, async (req, res) => {
   const { error } = shoeValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -33,7 +33,7 @@ router.post("/", async (req, res) => {
   res.send(shoe);
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", [validateObjectId, verify], async (req, res) => {
   const { error } = shoeValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -58,7 +58,7 @@ router.put("/:id", async (req, res) => {
   res.send(newShoe);
 });
 
-router.get("/:id", validateObjectId, async (req, res) => {
+router.get("/:id", async (req, res) => {
   const shoe = await Shoe.findById(req.params.id);
 
   if (!shoe)
@@ -67,7 +67,7 @@ router.get("/:id", validateObjectId, async (req, res) => {
   res.send(shoe);
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", [validateObjectId, verify], async (req, res) => {
   try {
     const shoe = await Shoe.findByIdAndRemove(req.params.id);
     res.send(shoe);
