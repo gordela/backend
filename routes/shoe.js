@@ -4,6 +4,7 @@ const router = require("express").Router();
 const { shoeValidation } = require("../validation");
 const verify = require("../routes/verifyToken");
 const validateObjectId = require("../validateObjectId");
+const admin = require("./admin");
 
 router.get("/", (req, res) => {
   Shoe.find((err, shoes) => res.send(shoes));
@@ -67,7 +68,7 @@ router.get("/:id", async (req, res) => {
   res.send(shoe);
 });
 
-router.delete("/:id", [validateObjectId, verify], async (req, res) => {
+router.delete("/:id", [validateObjectId, verify, admin], async (req, res) => {
   try {
     const shoe = await Shoe.findByIdAndRemove(req.params.id);
     res.send(shoe);
