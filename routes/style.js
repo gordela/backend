@@ -3,6 +3,7 @@ const router = require("express").Router();
 const verify = require("../routes/verifyToken");
 const { styleValidation } = require("../validation");
 const validateObjectId = require("../validateObjectId");
+const admin = require("./admin");
 router.get("/", async (req, res) => {
   const styles = await Style.find();
   res.send(styles);
