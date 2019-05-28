@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
   Shoe.find((err, shoes) => res.send(shoes));
 });
 
-router.post("/", verify, async (req, res) => {
+router.post("/", [verify, admin], async (req, res) => {
   const { error } = shoeValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -34,7 +34,7 @@ router.post("/", verify, async (req, res) => {
   res.send(shoe);
 });
 
-router.put("/:id", [validateObjectId, verify], async (req, res) => {
+router.put("/:id", [validateObjectId, verify, admin], async (req, res) => {
   const { error } = shoeValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
